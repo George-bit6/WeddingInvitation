@@ -12,12 +12,13 @@ let User = {
   number_of_guests: 2,
 };
 const pageStyle = {
-  height: "100vh",
+  height: "100%",
   width: "100vw",
   position: "relative",
   color: "white",
   justifyContent: "center",
   alignItems: "center",
+  scrollSnapAlign:'start',
 };
 
 const imagesColumn1 = [
@@ -63,7 +64,7 @@ const MarqueeItems = (props) => {
 
 export default function App() {
   return (
-    <VStack >
+    <Box gap={0} width={'100%'} overflowY={'auto'} height={'100vh'} scrollSnapType={'y mandatory'}>
 
       <VStack {...pageStyle}>
         
@@ -114,7 +115,10 @@ export default function App() {
           </HStack>
         </Box>
       </VStack>
-      <VStack {...pageStyle}>
+
+
+
+      <VStack {...pageStyle} >
         <Box
           position={"absolute"}
           height={"full"}
@@ -144,6 +148,6 @@ export default function App() {
         ></Box>
         <FullForm></FullForm>
       </VStack>
-    </VStack>
+    </Box>
   );
 }
