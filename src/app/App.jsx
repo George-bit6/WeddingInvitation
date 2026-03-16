@@ -1,244 +1,97 @@
-import "../styles/index.css";
+import { Heading, VStack, Box, Marquee, Image, HStack } from "@chakra-ui/react";
+import FullForm from "./component/FullForm";
 import "../styles/fonts.css";
-import { useState, useEffect } from "react";
-import supabase from "./supabase-client";
-import { HStack, VStack, Heading, SimpleGrid,GridItem, Table, IconButton, Button} from "@chakra-ui/react";
-import { LuClipboardCopy, LuTrash } from "react-icons/lu";
-import EditButton from "./component/EditButton";
-import AddButton from "./component/AddButton";
-import DeleteButton from "./component/DeleteButton";
+import "../styles/video.css"
+import backgroundImage from "../assets/weddingimage.jpg";
+import bgPage2 from "../assets/weddingimage2.jpg";
+import bgPage3 from "../assets/weddingimage3.jpg";
+import weddingRingsVid from "../assets/weddingRings.mp4";
+
+
+let User = {
+  fullName: "George Bou Faysal",
+  phoneNumber: 0o1234567,
+  accepted_invitation: false,
+  number_of_guests: 2,
+};
+const pageStyle = {
+  height: "100%",
+  width: "100vw",
+  position: "relative",
+  color: "white",
+  justifyContent: "center",
+  alignItems: "center",
+  scrollSnapAlign:'start',
+};
 
 export default function App() {
+  return (
+    <Box gap={0} width={'100%'} overflowX={'hidden'} overflowY={'auto'} height={'100vh'} scrollSnapType={'y mandatory'}>
+
+      <VStack {...pageStyle}>
+
+    <Box 
+    position={'relative'} 
+    display={'flex'} 
+    justifyContent={'center'} 
+    flexDirection={'column'} 
+    textAlign={'center'}
     
-  const [loading, setLoading] = useState(false);
-  const [tableData, setTableData] = useState([]);
-  const [errorData, setErrorData] = useState(false);
-  const [pendingNumber, setPendingNumber] = useState(0);
-  const [acceptedNumber, setAcceptedNumber] = useState(0);
-  const [rejectedNumber, setRejectedNumber] = useState(0);
-
-  const getInvitants = async () => {
-    setLoading(true);
-    setErrorData(false);
-    try{
-
-      const {data, error} = await supabase.rpc('get_invitants');
-      if(error){
-        setErrorData(true);
+    >
+        <Heading fontSize={"5xl"}>Jason & Jasona</Heading>
+        <Heading fontSize={"2xl"}>Wedding Invitation</Heading>
+        <Heading 
         
-      }
-      else{
-        setTableData(data || []);
-      }
-    }
-    catch(err){
-      setErrorData(true);
-    }
-    finally{
-      setLoading(false);
-    }
-    
-  }
+        position={'absolute'} 
+        fontSize={"9rem"}
+        fontFamily={'Pacifico'}
+        opacity={'0.4'}
+        fontWeight={'lighter'}
+        lineHeight={'short'}
+        color={'white'}
+        textAlign={'center'}
+        left={'-30%'}
 
- 
-
-  const addInvitant = async (full_name, number_guests, phone_number, status) => {
-
-    setErrorData(false);
-    try{
-
-      const {data, error} = await supabase.rpc('add_invitant', {
-
-        p_full_name: full_name,
-        p_guest_number: number_guests,
-        p_phone_number: phone_number,
-        p_status: status,
-        
-      });
-      if(error){
-        setErrorData(true);
-        
-      }
-      else{
-        getInvitants();
-      }
-    }
-    catch(err){
-      setErrorData(true);
-    }
-    
-
-  }
-
-  const handleAddFormSubmit = (formData) => {
-    addInvitant(formData.fullName, formData.numberOfGuests, formData.phoneNumber, 'Pending');
-  };
-
-  const handleEditFormSubmit = (formData) => {
-    console.log("Edit data:", formData);
-    // Add edit logic here when needed
-  };
-
-  const handleDelete = async (id) => {
-    setErrorData(false);
-    try {
-      const { error } = await supabase.rpc('delete_invitant', {
-        p_id: id,
-      });
-      if (error) {
-        setErrorData(true);
-      } else {
-        getInvitants();
-      }
-    } catch (err) {
-      setErrorData(true);
-    }
-  };
-
-  const get_count = async (status) => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase.rpc('get_count', {
-        p_status: status,
-      });
-      if (error) {
-        setErrorData(true);
-      } else {
-        switch (status) {
-          case 'Pending':
-            setPendingNumber(data);
-            break;
-          case 'Accepted':
-            setAcceptedNumber(data);
-            break;
-          case 'Rejected':
-            setRejectedNumber(data);
-            break;
-          default:
-            setErrorData(true);
-        }
-      }
-    } catch (err) {
-      setErrorData(true);
-    } finally {
-      setLoading(false);
-    }
-  }
-   
-  useEffect(() => {
-    getInvitants();
-  }, [])
-
-  useEffect(() => {
-    get_count('Pending');
-    get_count('Accepted');
-    get_count('Rejected');
-    
-  }, [tableData])
+        >
+          Wedding
+          </Heading>
+    </Box>
+                
+        <video src={weddingRingsVid} autoPlay  muted/>
+      </VStack>
 
 
 
-  return (<VStack gap={'48px'}>
+      <VStack {...pageStyle} >
+        <Box
+          position={"absolute"}
+          height={"full"}
+          width={"full"}
+          bgImage={`url(${backgroundImage})`}
+          bgSize={"cover"}
+          bgPos={"center"}
+          filter={"brightness(0.8)"}
+          zIndex={"hide"}
+        ></Box>
 
-    <Heading textDecoration={'underline'} fontFamily={'Pacifico'} fontWeight={'lighter'} lineHeight={'moderate'} marginTop={'72px'} fontSize={'5xl'} textAlign={'center'}>Wedding Invitation Dashboard</Heading>
-
-    <SimpleGrid columns={3} gap={"72px"} >
-      <GridItem colSpan={3}>
-        <VStack gap={'48px'}>
-          
-          <Heading fontSize={'3xl'} textAlign={'center'}>Invitants</Heading>
-          <Heading fontSize={'5xl'}>{pendingNumber + acceptedNumber +rejectedNumber}</Heading>
-        
-        </VStack>
-        
-      </GridItem>
-      <GridItem >
-          <VStack>
-          
-          <Heading fontSize={'xl'} textAlign={'center'}>Pending</Heading>
-          <Heading>{pendingNumber}</Heading>
-        
-        </VStack>
-      </GridItem>
-      <GridItem>
-          <VStack>
-          
-          <Heading fontSize={'xl'} textAlign={'center'}>Accepted</Heading>
-          <Heading >{acceptedNumber}</Heading>
-        
-        </VStack>
-      </GridItem>
-      <GridItem>
-         <VStack>
-          
-          <Heading fontSize={'xl'} textAlign={'center'}>Rejected</Heading>
-          <Heading >{rejectedNumber}</Heading>
-        
-        </VStack>
-      </GridItem>
-    </SimpleGrid>
-
-    <VStack>
-
-    <Heading>Invitants Table</Heading>
-    <HStack>
-      <Button onClick={() => getInvitants()}>Refresh Table</Button>
-      <AddButton onFormSubmit={handleAddFormSubmit} />
-    </HStack>
-    <Table.ScrollArea borderWidth={'1px'} maxW={'90vw'}>
-    <Table.Root showColumnBorder size={"sm"} variant={"outline"}>
-    <Table.Header>
-      <Table.Row>
-        <Table.ColumnHeader>Index</Table.ColumnHeader>
-        <Table.ColumnHeader>Full Name</Table.ColumnHeader>
-        <Table.ColumnHeader>Guest Number</Table.ColumnHeader>
-        <Table.ColumnHeader>Phone Number</Table.ColumnHeader>
-        <Table.ColumnHeader>Status</Table.ColumnHeader>
-        <Table.ColumnHeader></Table.ColumnHeader>
-        <Table.ColumnHeader></Table.ColumnHeader>
-        <Table.ColumnHeader></Table.ColumnHeader>
-      </Table.Row>
-    </Table.Header>
-
-    <Table.Body>
-      {tableData.map((node, i) => (
-
-        <Table.Row key={node.id}>
-        <Table.Cell>{i + 1}</Table.Cell>
-        <Table.Cell>{node.full_name}</Table.Cell>
-        <Table.Cell>{node.guest_number}</Table.Cell>
-        <Table.Cell>{node.phone_number}</Table.Cell>
-        <Table.Cell>{node.status}</Table.Cell>
-        <Table.Cell >
-          <IconButton>
-            <LuClipboardCopy />
-          </IconButton>
-        </Table.Cell>
-        <Table.Cell >
-          <EditButton onFormSubmit={handleEditFormSubmit} />
-        </Table.Cell>
-        <Table.Cell>
-          <DeleteButton onDelete={() => handleDelete(node.id)} />
-        </Table.Cell>
-      </Table.Row>
-
-      ))
+      </VStack>
 
 
-      }
-      
-    </Table.Body>
 
 
-    </Table.Root>
-</Table.ScrollArea>
-    </VStack>
-
-    
-
-
-  </VStack>
-
-  )
-
+      <VStack {...pageStyle}>
+        <Box
+          position={"absolute"}
+          height={"full"}
+          width={"full"}
+          bgImage={`url(${bgPage3})`}
+          bgSize={"cover"}
+          bgPos={"center"}
+          filter={"brightness(0.8)"}
+          zIndex={"hide"}
+        ></Box>
+        <FullForm></FullForm>
+      </VStack>
+    </Box>
+  );
 }
