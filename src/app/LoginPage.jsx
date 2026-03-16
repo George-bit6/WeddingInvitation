@@ -2,18 +2,48 @@ import "../styles/index.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "./supabase-client";
-import { Input, VStack, Heading, Button, Text, Center } from "@chakra-ui/react";
+import { Input, VStack, Heading, Button, Text, Container, Center, Spinner } from "@chakra-ui/react";
 
 
 export default function LoginPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
     const [claims, setClaims] = useState(null);
+
+    // Check URL params on initial render
+    const params = new URLSearchParams(window.location.search);
+    const hasTokenHash = params.get("token_hash");
+
+    const [verifying, setVerifying] = useState(!!hasTokenHash);
     const [authError, setAuthError] = useState(null);
+    const [authSuccess, setAuthSuccess] = useState(false);
+
+
 
     useEffect(() => {
+        // Check if we have token_hash in URL (magic link callback)
+        const params = new URLSearchParams(window.location.search);
+        const token_hash = params.get("token_hash");
+        const type = params.get("type");
+
+        if (token_hash) {
+            // Verify the OTP token
+            supabase.auth.verifyOtp({
+                token_hash,
+                type: type || "email",
+            }).then(({ error }) => {
+                if (error) {
+                    setAuthError(error.message);
+                } else {
+                    setAuthSuccess(true);
+                    // Clear URL params
+                    window.history.replaceState({}, document.title, "/");
+                }
+                setVerifying(false);
+            });
+        }
+
         // Check for existing session using getClaims
         supabase.auth.getClaims().then(({ data: { claims } }) => {
             setClaims(claims);
@@ -34,58 +64,87 @@ export default function LoginPage() {
     const handleLogin = async (event) => {
         event.preventDefault();
         setLoading(true);
-        setAuthError(null);
-
-        try {
-            // Query the auth table to find user by username
-            const { data: user, error: queryError } = await supabase
-                .from('auth')
-                .select('*')
-                .eq('username', username)
-                .single();
-
-            if (queryError || !user) {
-                setAuthError("User not found");
-                setLoading(false);
-                return;
+        const { error } = await supabase.auth.signInWithOtp({
+            email,
+            options: {
+                emailRedirectTo: window.location.origin,
             }
-
-            // Verify password (assuming password is stored in the database)
-            // Note: In production, passwords should be hashed and verified securely
-            if (user.password !== password) {
-                setAuthError("Invalid password");
-                setLoading(false);
-                return;
-            }
-
-            // Create a session manually by signing in with the user's email if available
-            if (user.email) {
-                const { error: signInError } = await supabase.auth.signInWithPassword({
-                    email: user.email,
-                    password: password,
-                });
-
-                if (signInError) {
-                    setAuthError("Authentication failed");
-                } else {
-                    // Claims will be set by the onAuthStateChange listener
-                    supabase.auth.getClaims().then(({ data: { claims } }) => {
-                        setClaims(claims);
-                    });
-                }
-            } else {
-                setAuthError("User email not found in database");
-            }
-        } catch (error) {
-            setAuthError(error.message || "Login failed");
+        });
+        if (error) {
+            alert(error.error_description || error.message);
+        } else {
+            alert("Check your email for the login link!");
         }
         setLoading(false);
     };
 
-    // If user is logged in, redirect to dashboard
+
+
+
+
+
+    // Show verification state
+    if (verifying) {
+        return (
+            <Center height={'100vh'}>
+                <VStack gap="4">
+                    <Heading>Authentication</Heading>
+                    <Text>Confirming your magic link...</Text>
+                    <Spinner />
+                </VStack>
+            </Center>
+        );
+    }
+
+    // Show auth error
+    if (authError) {
+        return (
+            <Center height={'100vh'}>
+                <VStack gap="4">
+                    <Heading>Authentication</Heading>
+                    <Text>✗ Authentication failed</Text>
+                    <Text color="red.500">{authError}</Text>
+                    <Button 
+                        onClick={() => {
+                            setAuthError(null);
+                            window.history.replaceState({}, document.title, "/");
+                        }}
+                    >
+                        Return to login
+                    </Button>
+                </VStack>
+            </Center>
+        );
+    }
+
+    // Show auth success (briefly before claims load)
+    if (authSuccess && !claims) {
+        return (
+            <Center height={'100vh'}>
+                <VStack gap="4">
+                    <Heading>Authentication</Heading>
+                    <Text>✓ Authentication successful!</Text>
+                    <Text>Loading your account...</Text>
+                    <Spinner />
+                </VStack>
+            </Center>
+        );
+    }
+
+
     if (claims) {
         navigate("/dashboard", { replace: true });
-        return null;
+        return (
+            <Center height={'100vh'}>
+                <Spinner />
+
+
+
+
+
+
+            </Center>
+        );
     }
 
     // Show login form
@@ -93,37 +152,25 @@ export default function LoginPage() {
       <Center height={'80vh'}>
         <VStack gap="12">
             <Heading fontSize="3xl">Sign In</Heading>
-            
-            {authError && (
-                <Text color="red.500" fontSize="sm">{authError}</Text>
-            )}
-            
+
             <form onSubmit={handleLogin}>
                 <VStack gap="4">
                     <Input
                         width="400px"
-                        type="text"
-                        placeholder="Username"
-                        value={username}
+                        type="email"
+                        placeholder="Your email"
+                        value={email}
                         required={true}
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
-                    
-                    <Input
-                        width="400px"
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        required={true}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                  
-                    <Button type="submit" isLoading={loading} loadingText="Signing in...">
-                        Sign In
+
+                    <Button type="submit" isLoading={loading} loadingText="Sending...">
+                        Send magic link
                     </Button>
                 </VStack>
             </form>
         </VStack>
         </Center>
     );
+
 }
