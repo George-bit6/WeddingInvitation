@@ -7,6 +7,7 @@ import backgroundImage from "../assets/weddingimage.jpg";
 import bgPage2 from "../assets/weddingimage2.jpg";
 import bgPage3 from "../assets/weddingimage3.jpg";
 import weddingRingsVid from "../assets/upscaled-video.mp4";
+import weddingRingsVidFallback from "../assets/weddingRings.mp4";
 import stRitaIcon from "../assets/rita-icon-white.png";
 
 let User = {
@@ -72,7 +73,11 @@ export default function App() {
           </Heading>
         </Box>
 
-        <video src={weddingRingsVid} autoPlay loop muted />
+        <video autoPlay loop muted>
+          
+          <source src={weddingRingsVidFallback} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </VStack>
 
       <VStack {...pageStyle} justifyContent={"flex-start"}>
