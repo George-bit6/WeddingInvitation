@@ -1,10 +1,12 @@
 import "../styles/index.css";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import supabase from "./supabase-client";
 import { Input, VStack, Heading, Button, Text, Container, Center, Spinner } from "@chakra-ui/react";
 
 
 export default function LoginPage() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [claims, setClaims] = useState(null);
@@ -76,11 +78,6 @@ export default function LoginPage() {
         setLoading(false);
     };
 
-    const handleLogout = async () => {
-        await supabase.auth.signOut();
-        setClaims(null);
-    };
-
     // Show verification state
     if (verifying) {
         return (
@@ -129,17 +126,11 @@ export default function LoginPage() {
         );
     }
 
-    // If user is logged in, show welcome screen
     if (claims) {
+        navigate("/dashboard", { replace: true });
         return (
             <Center height={'100vh'}>
-                <VStack gap="6">
-                    <Heading>Welcome!</Heading>
-                    <Text>You are logged in as: {claims.email}</Text>
-                    <Button onClick={handleLogout} colorScheme="red">      
-                        Sign Out
-                    </Button>
-                </VStack>
+                <Spinner />
             </Center>
         );
     }
