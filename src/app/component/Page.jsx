@@ -1,7 +1,7 @@
 import { VStack, Heading, Box } from "@chakra-ui/react"
 
 const pageStyle = {
-  height: "100%",
+  height: "100vh",
   width: "100vw",
   position: "relative",
   color: "white",

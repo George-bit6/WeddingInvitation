@@ -12,10 +12,11 @@ import "@fontsource/inter/400.css"
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App/>
+    path: "/:id/:fullName",
+    element: <App/>,
+    
   },
-  {
+   {
     path: "/signin",
     element: <LoginPage/>
   },

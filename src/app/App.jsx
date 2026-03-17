@@ -4,6 +4,7 @@ import {
   HStack,
   Button,
   Box,
+  Text,
   Marquee,
   Image,
 } from "@chakra-ui/react";
@@ -19,6 +20,7 @@ import bgPage3 from "../assets/DSC01224.jpg";
 import bgPage4 from "../assets/DSC01396.jpg";
 import bgPage5 from "../assets/DSC01445.jpg";
 import bgPage6 from "../assets/DSC01429.jpg";
+import { useParams } from "react-router-dom";
 
 let User = {
   fullName: "George Bou Faysal",
@@ -32,6 +34,8 @@ const secondFont = {
 };
 
 export default function App() {
+  const { id, fullName } = useParams();
+
   return (
     <Box
       gap={0}
@@ -57,7 +61,12 @@ export default function App() {
       </Page>
 
       <Page bgImage={bgPage2} gap={"7"}>
-        <Heading fontSize={"4rem"} fontWeight={"bold"} marginBottom={"5rem"}>
+        <Heading
+          fontSize={"4rem"}
+          fontWeight={"bold"}
+          marginBottom={"5rem"}
+          textAlign={"center"}
+        >
           Wedding Ceremony
         </Heading>
         <VStack gap={"7"} marginBottom={"4rem"}>
@@ -84,8 +93,8 @@ export default function App() {
       </Page>
 
       <Page bgImage={bgPage3}>
-        <VStack height={"90vh"} justifyContent={'space-between'}>
-          <VStack  justifyContent={"flex-start"}>
+        <VStack height={"90vh"} justifyContent={"space-between"}>
+          <VStack justifyContent={"flex-start"}>
             <VStack>
               <Heading
                 fontSize={"2rem"}
@@ -116,7 +125,12 @@ export default function App() {
               Youssef & Joelle
             </Heading>
           </VStack>
-          <Heading fontSize={"2rem"} textAlign={"center"} fontWeight={"bold"}>
+          <Heading
+            fontSize={"2rem"}
+            textAlign={"center"}
+            fontWeight={"bold"}
+            marginBottom={"4rem"}
+          >
             on June 13, 2026
           </Heading>
         </VStack>
@@ -160,9 +174,35 @@ export default function App() {
           </Button>
         </VStack>
       </Page>
-      <Page bgImage={bgPage5}></Page>
+      <Page bgImage={bgPage5}>
+        <VStack height={"80vh"} justifyContent={"space-between"}>
+          <Heading fontWeight={"lighter"} fontSize={"3.5rem"}>
+            Gift Registry
+          </Heading>
+          <VStack margin={"8px"}>
+            <Text fontWeight={"lighter"} fontSize={"2rem"} textAlign={"center"}>
+              Having you celebrate with us is the only git we truly need
+            </Text>
+            <Text fontWeight={"lighter"} fontSize={"2rem"} textAlign={"center"}>
+              For those who desire a wedding list is available at Whish Money
+            </Text>
+            <Text fontWeight={"lighter"} fontSize={"2rem"} textAlign={"center"}>
+              Acc Number --------
+            </Text>
+          </VStack>
+        </VStack>
+      </Page>
 
-      <Page bgImage={bgPage6}></Page>
+      <Page bgImage={bgPage6}>                            
+        <VStack height={'90vh'} marginTop={'1rem'} justifyContent={'flex-start'}>
+          <Heading fontSize={'4rem'} textAlign={'center'}>Be Our Guest</Heading>
+        <VStack marginTop={'2rem'}>
+          <Text fontSize={'2.4rem'} textAlign={'center'}>Please Confirm by May 15</Text>
+          <Text fontSize={'2.4rem'} textAlign={'center'}>we can't wait to celebrate with you!</Text>
+        </VStack>
+        </VStack>
+        
+      </Page>
     </Box>
   );
 }
