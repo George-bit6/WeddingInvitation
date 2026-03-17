@@ -1,14 +1,24 @@
-import { Heading, VStack, HStack,Button ,Box, Marquee, Image, } from "@chakra-ui/react";
-import { useRef, useEffect, useState } from "react";
-import FullForm from "./component/FullForm";
+import {
+  Heading,
+  VStack,
+  HStack,
+  Button,
+  Box,
+  Marquee,
+  Image,
+} from "@chakra-ui/react";
+
+import { LuCalendar, LuMapPin } from "react-icons/lu";
+
+import Page from "./component/Page";
 import "../styles/fonts.css";
 import "../styles/video.css";
-import backgroundImage from "../assets/weddingimage.jpg";
-import bgPage2 from "../assets/weddingimage2.jpg";
-import bgPage3 from "../assets/weddingimage3.jpg";
-import weddingRingsVid from "../assets/upscaled-video.mp4";
-import weddingRingsVidFallback from "../assets/weddingRings.mp4";
-import stRitaIcon from "../assets/rita-icon-white.png";
+import backgroundImage from "../assets/DSC01279.jpg";
+import bgPage2 from "../assets/DSC01319.jpg";
+import bgPage3 from "../assets/DSC01224.jpg";
+import bgPage4 from "../assets/DSC01396.jpg";
+import bgPage5 from "../assets/DSC01445.jpg";
+import bgPage6 from "../assets/DSC01429.jpg";
 
 let User = {
   fullName: "George Bou Faysal",
@@ -16,25 +26,9 @@ let User = {
   accepted_invitation: false,
   number_of_guests: 2,
 };
-const pageStyle = {
-  height: "100%",
-  width: "100vw",
-  position: "relative",
-  color: "white",
-  justifyContent: "center",
-  alignItems: "center",
-  scrollSnapAlign: "start",
-};
 
-const locationStyle = {
-  width: "300px",
-  aspectRatio: "4/3",
-  borderRadius: "4xl",
-  boxShadow: "2px 2px 8px rgba(0,0,0,0.2)",
-  border: "3px",
-  borderStyle: "solid",
-  borderColor: "white",
-  marginTop: "64px",
+const secondFont = {
+  fontFamily: "inter",
 };
 
 export default function App() {
@@ -47,141 +41,128 @@ export default function App() {
       height={"100vh"}
       scrollSnapType={"y mandatory"}
     >
-      <VStack {...pageStyle}>
-        <Box
-          position={"relative"}
-          display={"flex"}
-          justifyContent={"center"}
-          flexDirection={"column"}
-          textAlign={"center"}
+      <Page bgImage={backgroundImage}>
+        <Heading
+          className="imperial-script-regular"
+          textWrap={"balance"}
+          lineHeight={"7rem"}
+          width={"18rem"}
+          fontSize={"5rem"}
         >
-          <Heading fontSize={"5xl"}>Youssef & Joelle</Heading>
-          <Heading marginTop={'24px'} fontSize={"2xl"}>Wedding Invitation</Heading>
-          <Heading
-            position={"absolute"}
-            fontSize={"9rem"}
-            fontFamily={"Pacifico"}
-            opacity={"0.3"}
-            fontWeight={"lighter"}
-            lineHeight={"shorter"}
-            color={"white"}
-            textAlign={"center"}
-            left={"-30%"}
-          >
-            Wedding
-            Invitation
+          Youssef & Joelle
+        </Heading>
+        <Heading marginTop={"24px"} fontSize={"2rem"} fontWeight={"normal"}>
+          Are Getting Married
+        </Heading>
+      </Page>
+
+      <Page bgImage={bgPage2} gap={"7"}>
+        <Heading fontSize={"4rem"} fontWeight={"bold"} marginBottom={"5rem"}>
+          Wedding Ceremony
+        </Heading>
+        <VStack gap={"7"} marginBottom={"4rem"}>
+          <LuCalendar size={"81px"} />
+          <Heading fontSize={"3rem"}>June 13,2026</Heading>
+          <Heading fontWeight={"lighter"} fontSize={"3rem"}>
+            6:30 pm
           </Heading>
-        </Box>
+        </VStack>
 
-        <video autoPlay loop muted>
-          
-          <source src={weddingRingsVidFallback} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </VStack>
+        <VStack gap={"7"}>
+          <LuMapPin size={"81px"} />
+          <Heading fontSize={"3rem"}>Ste Rita Church,</Heading>
+          <Heading fontSize={"3rem"}>Mar Roukoz</Heading>
+          <Button
+            variant={"outline"}
+            color={"white"}
+            size={"2xl"}
+            fontSize={"3rem"}
+          >
+            Locate Map
+          </Button>
+        </VStack>
+      </Page>
 
-      <VStack {...pageStyle} justifyContent={"flex-start"}>
-        <Box
-          position={"absolute"}
-          height={"full"}
-          width={"full"}
-          bgImage={`url(${bgPage3})`}
-          bgSize={"cover"}
-          bgPos={"center"}
-          filter={"brightness(0.8)"}
-          zIndex={"hide"}
-        ></Box>
-
-        <Box
-          as={"iframe"}
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3313.6012829633237!2d35.586864276632745!3d33.84839172846525!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151f3d136f6bb369%3A0xceeb9900385080d!2sSt.%20Rita%20Church!5e0!3m2!1sen!2slb!4v1773630400095!5m2!1sen!2slb"
-          {...locationStyle}
-        ></Box>
+      <Page bgImage={bgPage3}>
+        <VStack height={"90vh"} justifyContent={'space-between'}>
+          <VStack  justifyContent={"flex-start"}>
+            <VStack>
+              <Heading
+                fontSize={"2rem"}
+                textAlign={"center"}
+                fontWeight={"bold"}
+                marginBottom={"1rem"}
+              >
+                With Joyous hearts
+              </Heading>
+              <Heading
+                fontSize={"2rem"}
+                textAlign={"center"}
+                fontWeight={"bold"}
+                marginBottom={"1rem"}
+              >
+                Maksour and Aoun Families invite you
+              </Heading>
+              <Heading
+                fontSize={"2rem"}
+                textAlign={"center"}
+                fontWeight={"bold"}
+                marginBottom={"5rem"}
+              >
+                to celebrate the Wedding of
+              </Heading>
+            </VStack>
+            <Heading fontSize={"4rem"} textAlign={"center"} fontWeight={"bold"}>
+              Youssef & Joelle
+            </Heading>
+          </VStack>
+          <Heading fontSize={"2rem"} textAlign={"center"} fontWeight={"bold"}>
+            on June 13, 2026
+          </Heading>
+        </VStack>
+      </Page>
+      <Page bgImage={bgPage4}>
         <Heading
-          fontSize={"1.5rem"}
-          fontWeight={"light"}
-          fontFamily={"Pacifico"}
+          {...secondFont}
+          textAlign={"center"}
+          fontSize={"2rem"}
+          fontWeight={"bold"}
+          marginBottom={"5rem"}
         >
-          St. Rita Church Monteverde
+          Welcome Drink and Dinner
         </Heading>
-        <Heading
-          fontFamily={"Pacifico"}
-          fontWeight={"lighter"}
-          fontSize={"1.4rem"}
-        >
-          5:00pm - 6:00pm
-        </Heading>
-        <Box
-          height={"240px"}
-          marginTop={"72px"}
-          aspectRatio={1}
-          bgSize={"cover"}
-          bgPos={"center"}
-          bgImage={`url(${stRitaIcon})`}
-        ></Box>
-      </VStack>
+        <VStack gap={"7"} marginBottom={"4rem"}>
+          <LuCalendar size={"81px"} />
+          <Heading {...secondFont} fontSize={"2rem"}>
+            June 13,2026
+          </Heading>
+          <Heading {...secondFont} fontWeight={"lighter"} fontSize={"2rem"}>
+            8:00 pm
+          </Heading>
+        </VStack>
 
-      <VStack {...pageStyle} justifyContent={"flex-start"}>
-        <Box
-          position={"absolute"}
-          height={"full"}
-          width={"full"}
-          bgImage={`url(${backgroundImage})`}
-          bgSize={"cover"}
-          bgPos={"center"}
-          filter={"brightness(0.8)"}
-          zIndex={"hide"}
-        ></Box>
+        <VStack gap={"7"}>
+          <LuMapPin size={"81px"} />
+          <Heading {...secondFont} fontSize={"2rem"}>
+            The Grandhouse
+          </Heading>
+          <Heading {...secondFont} fontSize={"2rem"}>
+            Mansourieh
+          </Heading>
+          <Button
+            {...secondFont}
+            variant={"outline"}
+            color={"white"}
+            size={"2xl"}
+            fontSize={"3rem"}
+          >
+            Locate Map
+          </Button>
+        </VStack>
+      </Page>
+      <Page bgImage={bgPage5}></Page>
 
-        <Box
-          as={"iframe"}
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3312.971918499113!2d35.56608351233555!3d33.86461457311651!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151f3d51b90016f9%3A0xc8fe6eee28668b04!2sThe%20Grandhouse%20Venue!5e0!3m2!1sen!2slb!4v1773630921841!5m2!1sen!2slb"
-          {...locationStyle}
-        ></Box>
-        <Heading
-          fontSize={"1.5rem"}
-          fontWeight={"light"}
-          fontFamily={"Pacifico"}
-        >
-          Grandhouse Venue Mansourieh
-        </Heading>
-        <Heading
-          fontFamily={"Pacifico"}
-          fontWeight={"lighter"}
-          fontSize={"1.4rem"}
-        >
-          8:00pm - 12:00pm
-        </Heading>
-      </VStack>
-
-       <VStack {...pageStyle} justifyContent={"center"}>
-        <Box
-          position={"absolute"}
-          height={"full"}
-          width={"full"}
-          bgImage={`url(${backgroundImage})`}
-          bgSize={"cover"}
-          bgPos={"center"}
-          filter={"brightness(0.8)"}
-          zIndex={"hide"}
-        ></Box>
-
-        <Heading 
-        fontFamily={"Pacifico"}
-        fontWeight={'lighter'}
-        fontSize={'4xl'}
-        textAlign={'center'}
-        margin={'24px'}
-        >Answer the Invitation Request</Heading>
-
-        <HStack>
-          <Button variant={'surface'} colorPalette={'red'}>Decline Invitation</Button>
-        <Button>Accept Invitation</Button>
-        </HStack>
-        
-       
-        
-      </VStack>
+      <Page bgImage={bgPage6}></Page>
     </Box>
   );
 }

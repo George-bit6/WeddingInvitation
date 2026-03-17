@@ -7,3 +7,24 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "ImperialScript";
+  src: url("../assets/fonts/imperialScript/ImperialScript-Regular.woff2") format("woff2");
+  src: url("../assets/fonts/imperialScript/ImperialScript-Regular.woff") format("woff");
+  font-style: normal;
+  font-display: swap;
+}
+
+.imperial-script-regular {
+  font-family: "ImperialScript", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+
+  font-family: "ImperialScript", cursive;
+  font-weight: 400;
+  font-style: normal;
+
+}
