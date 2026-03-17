@@ -14,7 +14,7 @@ const pageStyle = {
 export default function Page(props){
 
 
-   return <VStack gap={props.gap} {...pageStyle}>
+   return <VStack  {...pageStyle}>
       <Box
           position={"absolute"}
           height={"full"}

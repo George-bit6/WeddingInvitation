@@ -7,18 +7,24 @@ import "./styles/index.css";
 import App from "./app/App.jsx";
 import LoginPage from "./app/LoginPage.jsx";
 import Dashboard from "./app/Dashboard.jsx";
+import ErrorPage from "./app/ErrorPage";
 import ProtectedRoute from "./ProtectedRoute.jsx";
-import "@fontsource/inter/400.css"
+import "@fontsource/inter/400.css";
 
 const router = createBrowserRouter([
   {
-    path: "/:id/:fullName",
-    element: <App/>,
-    
+    path: "/:id?/:fullName?",
+    element: <App />,
+    errorElement: <ErrorPage/>
   },
-   {
+  {
     path: "/signin",
-    element: <LoginPage/>
+
+    element: (
+      
+        <LoginPage />
+      
+    ),
   },
   {
     path: "/dashboard",
@@ -26,14 +32,22 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <Dashboard />
       </ProtectedRoute>
-    )
+    ),
+  },
+  {
+    path: "*",
+    element: <ErrorPage/>
   }
-])
+]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ChakraProvider value={defaultSystem}>
-      <ThemeProvider attribute="class" disableTransitionOnChange forcedTheme="light">
+      <ThemeProvider
+        attribute="class"
+        disableTransitionOnChange
+        forcedTheme="light"
+      >
         <RouterProvider router={router} />
       </ThemeProvider>
     </ChakraProvider>

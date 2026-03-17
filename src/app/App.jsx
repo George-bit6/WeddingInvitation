@@ -20,7 +20,10 @@ import bgPage3 from "../assets/DSC01224.jpg";
 import bgPage4 from "../assets/DSC01396.jpg";
 import bgPage5 from "../assets/DSC01445.jpg";
 import bgPage6 from "../assets/DSC01429.jpg";
+import envVideo from "../assets/openingEnvelope.mp4";
+import bgMusic from "../assets/YoureMyEverything.mpeg";
 import { useParams } from "react-router-dom";
+import { useState, useRef } from "react";
 
 let User = {
   fullName: "George Bou Faysal",
@@ -36,6 +39,34 @@ const secondFont = {
 export default function App() {
   const { id, fullName } = useParams();
 
+  const [startClicked, setStartClicked] = useState(false);
+
+  const videoRef = useRef(null);
+  const audioRef = useRef(null);
+
+  const handleStart = () => {
+    setStartClicked(true);
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 2;
+      videoRef.current.play();
+    }
+
+   if (audioRef.current) {
+    audioRef.current.load(); // 👈 call load() first when using <source> tags
+    audioRef.current.play();
+  }
+  };
+
+  const pageStyle = {
+    height: "100vh",
+    width: "100vw",
+    position: "relative",
+    color: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    scrollSnapAlign: "start",
+  };
+
   return (
     <Box
       gap={0}
@@ -45,22 +76,62 @@ export default function App() {
       height={"100vh"}
       scrollSnapType={"y mandatory"}
     >
+      <VStack {...pageStyle}>
+        <Box
+          ref={videoRef}
+          position="absolute"
+          height="full"
+          width="full"
+          as="video"
+          controls={false}
+          src={`${envVideo}`}
+          objectFit="cover"
+          muted
+          filter={`brightness(0.8)`}
+          zIndex="hide"
+        />
+
+        {/* Persistent background music - lives outside pages so it never unmounts */}
+       <audio
+  ref={audioRef}
+  src={bgMusic}  // 👈 place the .mpeg file in /public folder
+  loop
+  style={{ display: "none" }}
+/>
+        {!startClicked && (
+          <Button
+            onClick={handleStart} // 👈 use handleStart instead of inline setter
+            aspectRatio="1"
+            variant="outline"
+            height="8rem"
+            color="white"
+            fontSize="3rem"
+            borderRadius="100%"
+          >
+            Start
+          </Button>
+        )}
+      </VStack>
+
       <Page bgImage={backgroundImage}>
-        <Heading
-          className="imperial-script-regular"
-          textWrap={"balance"}
-          lineHeight={"7rem"}
-          width={"18rem"}
-          fontSize={"5rem"}
-        >
-          Youssef & Joelle
-        </Heading>
-        <Heading marginTop={"24px"} fontSize={"2rem"} fontWeight={"normal"}>
+        <VStack gap={"4em"}>
+          <Heading textAlign={"center"} fontSize={"5rem"}>
+            Youssef
+          </Heading>
+          <Heading textAlign={"center"} fontSize={"5rem"}>
+            &
+          </Heading>
+          <Heading textAlign={"center"} fontSize={"5rem"}>
+            Joelle
+          </Heading>
+        </VStack>
+
+        <Heading marginTop={"64px"} fontSize={"2rem"} fontWeight={"normal"}>
           Are Getting Married
         </Heading>
       </Page>
 
-      <Page bgImage={bgPage2} gap={"7"}>
+      <Page bgImage={bgPage2}>
         <Heading
           fontSize={"4rem"}
           fontWeight={"bold"}
@@ -193,15 +264,25 @@ export default function App() {
         </VStack>
       </Page>
 
-      <Page bgImage={bgPage6}>                            
-        <VStack height={'90vh'} marginTop={'1rem'} justifyContent={'flex-start'}>
-          <Heading fontSize={'4rem'} textAlign={'center'}>Be Our Guest</Heading>
-        <VStack marginTop={'2rem'}>
-          <Text fontSize={'2.4rem'} textAlign={'center'}>Please Confirm by May 15</Text>
-          <Text fontSize={'2.4rem'} textAlign={'center'}>we can't wait to celebrate with you!</Text>
+      <Page bgImage={bgPage6}>
+        <VStack
+          height={"90vh"}
+          marginTop={"1rem"}
+          justifyContent={"flex-start"}
+        >
+          <Heading fontSize={"4rem"} textAlign={"center"}>
+            Be Our Guest
+          </Heading>
+          <VStack marginTop={"2rem"}>
+            <Text fontSize={"2.4rem"} textAlign={"center"}>
+              Please Confirm by May 15
+            </Text>
+            <Text fontSize={"2.4rem"} textAlign={"center"}>
+              We can't wait to celebrate with you!
+            </Text>
+          </VStack>
+          <Heading>{fullName}</Heading>
         </VStack>
-        </VStack>
-        
       </Page>
     </Box>
   );

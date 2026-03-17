@@ -1,5 +1,5 @@
 import "../styles/index.css";
-import "../styles/fonts.css";
+import "../styles/fonts2.css";
 import { useState, useEffect } from "react";
 import supabase from "./supabase-client";
 import { HStack, VStack, Heading, SimpleGrid,GridItem, Table, IconButton, Button} from "@chakra-ui/react";
@@ -7,7 +7,7 @@ import { LuClipboardCopy, LuTrash } from "react-icons/lu";
 import EditButton from "./component/EditButton";
 import AddButton from "./component/AddButton";
 import DeleteButton from "./component/DeleteButton";
-
+import CopyButton from "./component/CopyButton";
 export default function App() {
     
   const [loading, setLoading] = useState(false);
@@ -211,7 +211,7 @@ export default function App() {
         <Table.Cell>{node.status}</Table.Cell>
         <Table.Cell >
           <IconButton>
-            <LuClipboardCopy />
+            <CopyButton id={node.id} fullname = {node.full_name}></CopyButton>
           </IconButton>
         </Table.Cell>
         <Table.Cell >
