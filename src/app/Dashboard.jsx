@@ -10,6 +10,11 @@ import DeleteButton from "./component/DeleteButton";
 import CopyButton from "./component/CopyButton";
 export default function App() {
     
+  const font2 = {
+    fontFamily: 'inter'
+  }
+
+
   const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [errorData, setErrorData] = useState(false);
@@ -140,14 +145,14 @@ export default function App() {
 
   return (<VStack gap={'48px'}>
 
-    <Heading textDecoration={'underline'} fontFamily={'Pacifico'} fontWeight={'lighter'} lineHeight={'moderate'} marginTop={'72px'} fontSize={'5xl'} textAlign={'center'}>Wedding Invitation Dashboard</Heading>
+    <Heading  textDecoration={'underline'} fontFamily={'Pacifico'} fontWeight={'lighter'} lineHeight={'moderate'} marginTop={'72px'} fontSize={'5xl'} textAlign={'center'}>Wedding Invitation Dashboard</Heading>
 
     <SimpleGrid columns={3} gap={"72px"} >
       <GridItem colSpan={3}>
         <VStack gap={'48px'}>
           
-          <Heading fontSize={'3xl'} textAlign={'center'}>Invitants</Heading>
-          <Heading fontSize={'5xl'}>{pendingNumber + acceptedNumber +rejectedNumber}</Heading>
+          <Heading {...font2}fontSize={'3xl'} textAlign={'center'}>Invitants</Heading>
+          <Heading {...font2}fontSize={'5xl'}>{pendingNumber + acceptedNumber +rejectedNumber}</Heading>
         
         </VStack>
         
@@ -155,7 +160,7 @@ export default function App() {
       <GridItem >
           <VStack>
           
-          <Heading fontSize={'xl'} textAlign={'center'}>Pending</Heading>
+          <Heading {...font2} fontSize={'xl'} textAlign={'center'}>Pending</Heading>
           <Heading>{pendingNumber}</Heading>
         
         </VStack>
@@ -163,7 +168,7 @@ export default function App() {
       <GridItem>
           <VStack>
           
-          <Heading fontSize={'xl'} textAlign={'center'}>Accepted</Heading>
+          <Heading {...font2} fontSize={'xl'} textAlign={'center'}>Accepted</Heading>
           <Heading >{acceptedNumber}</Heading>
         
         </VStack>
@@ -171,7 +176,7 @@ export default function App() {
       <GridItem>
          <VStack>
           
-          <Heading fontSize={'xl'} textAlign={'center'}>Rejected</Heading>
+          <Heading {...font2} fontSize={'xl'} textAlign={'center'}>Rejected</Heading>
           <Heading >{rejectedNumber}</Heading>
         
         </VStack>
@@ -180,23 +185,23 @@ export default function App() {
 
     <VStack>
 
-    <Heading>Invitants Table</Heading>
+    <Heading {...font2}>Invitants Table</Heading>
     <HStack>
-      <Button onClick={() => getInvitants()}>Refresh Table</Button>
+      <Button {...font2} onClick={() => getInvitants()}>Refresh Table</Button>
       <AddButton onFormSubmit={handleAddFormSubmit} />
     </HStack>
     <Table.ScrollArea borderWidth={'1px'} maxW={'90vw'}>
     <Table.Root showColumnBorder size={"sm"} variant={"outline"}>
     <Table.Header>
       <Table.Row>
-        <Table.ColumnHeader>Index</Table.ColumnHeader>
-        <Table.ColumnHeader>Full Name</Table.ColumnHeader>
-        <Table.ColumnHeader>Guest Number</Table.ColumnHeader>
-        <Table.ColumnHeader>Phone Number</Table.ColumnHeader>
-        <Table.ColumnHeader>Status</Table.ColumnHeader>
-        <Table.ColumnHeader></Table.ColumnHeader>
-        <Table.ColumnHeader></Table.ColumnHeader>
-        <Table.ColumnHeader></Table.ColumnHeader>
+        <Table.ColumnHeader {...font2}>Index</Table.ColumnHeader>
+        <Table.ColumnHeader {...font2}>Full Name</Table.ColumnHeader>
+        <Table.ColumnHeader {...font2}>Guest Number</Table.ColumnHeader>
+        <Table.ColumnHeader {...font2}>Phone Number</Table.ColumnHeader>
+        <Table.ColumnHeader {...font2}>Status</Table.ColumnHeader>
+        <Table.ColumnHeader{...font2}></Table.ColumnHeader>
+        <Table.ColumnHeader{...font2}></Table.ColumnHeader>
+        <Table.ColumnHeader {...font2}></Table.ColumnHeader>
       </Table.Row>
     </Table.Header>
 
@@ -204,11 +209,11 @@ export default function App() {
       {tableData.map((node, i) => (
 
         <Table.Row key={node.id}>
-        <Table.Cell>{i + 1}</Table.Cell>
-        <Table.Cell>{node.full_name}</Table.Cell>
-        <Table.Cell>{node.guest_number}</Table.Cell>
-        <Table.Cell>{node.phone_number}</Table.Cell>
-        <Table.Cell>{node.status}</Table.Cell>
+        <Table.Cell {...font2}>{i + 1}</Table.Cell>
+        <Table.Cell {...font2}>{node.full_name}</Table.Cell>
+        <Table.Cell {...font2}>{node.guest_number}</Table.Cell>
+        <Table.Cell {...font2}>{node.phone_number}</Table.Cell>
+        <Table.Cell {...font2}>{node.status}</Table.Cell>
         <Table.Cell >
           <IconButton>
             <CopyButton id={node.id} fullname = {node.full_name}></CopyButton>

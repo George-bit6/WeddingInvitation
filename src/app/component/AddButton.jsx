@@ -11,6 +11,10 @@ export default function AddButton({ onFormSubmit }) {
     },
   });
 
+  const font2 = {
+    fontFamily: 'inter'
+  }
+
   const [submittedData, setSubmittedData] = useState(null);
 
   const onSubmit = (data) => {
@@ -22,7 +26,7 @@ export default function AddButton({ onFormSubmit }) {
   return (
     <Dialog.Root placement="center" motionPreset="slide-in-bottom">
       <Dialog.Trigger asChild>
-        <Button>
+        <Button {...font2}>
           Add Invitant
         </Button>
       </Dialog.Trigger>
@@ -31,7 +35,7 @@ export default function AddButton({ onFormSubmit }) {
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>Add Invitant</Dialog.Title>
+              <Dialog.Title {...font2}>Add Invitant</Dialog.Title>
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="sm" />
               </Dialog.CloseTrigger>
@@ -40,8 +44,8 @@ export default function AddButton({ onFormSubmit }) {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Stack gap="8" maxW="sm" css={{ "--field-label-width": "96px" }}>
                   <Field.Root orientation="horizontal">
-                    <Field.Label>Full Name</Field.Label>
-                    <Input
+                    <Field.Label {...font2}>Full Name</Field.Label>
+                    <Input {...font2}
                       placeholder="John Doe"
                       flex="1"
                       {...register("fullName")}
@@ -49,8 +53,8 @@ export default function AddButton({ onFormSubmit }) {
                   </Field.Root>
 
                   <Field.Root orientation="horizontal">
-                    <Field.Label>Number of Guests</Field.Label>
-                    <Input
+                    <Field.Label {...font2}>Number of Guests</Field.Label>
+                    <Input {...font2}
                       placeholder="1"
                       flex="1"
                       type="number"
@@ -59,8 +63,8 @@ export default function AddButton({ onFormSubmit }) {
                   </Field.Root>
 
                   <Field.Root orientation="horizontal">
-                    <Field.Label>Phone Number</Field.Label>
-                    <Input
+                    <Field.Label {...font2}>Phone Number</Field.Label>
+                    <Input {...font2}
                       placeholder="xx/xxx/xxx"
                       flex="1"
                       {...register("phoneNumber")}

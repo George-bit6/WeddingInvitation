@@ -26,7 +26,7 @@ import bgMusic from "../assets/YoureMyEverything.mp3";
 import supabase from "./supabase-client";
 import { useParams } from "react-router-dom";
 import { useState, useRef } from "react";
-import Radio from "./component/Radio";
+import CustomRadio from "./component/Radio";
 
 
 
@@ -42,22 +42,6 @@ export default function App() {
   const videoRef = useRef(null);
   const audioRef = useRef(null);
 
-const [selectedStatus, setSelectedStatus] = useState(null);
-
-const updateStatus = async (newStatus) => {
-  const { data, error } = await supabase
-    .from('Invitants')
-    .update({ status: newStatus })
-    .eq('id', id)
-    .select();
-
-  if (error) {
-    console.error('Failed to update status:', error.message);
-    throw error;
-  }
-
-  return data;
-};
 
   
 const iconStyle = {
@@ -349,7 +333,7 @@ const iconStyle = {
             </Text>
           </VStack>
           <Heading fontSize={'2.7rem'}>{fullName}</Heading>
-          <Radio></Radio>
+          <CustomRadio id={id}></CustomRadio>
         </VStack>
       </Page>
     </Box>
