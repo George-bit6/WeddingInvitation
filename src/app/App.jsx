@@ -6,9 +6,10 @@ import {
   Box,
   Text,
   Icon,
-  Image,
+  Link
 } from "@chakra-ui/react";
 
+import { Link as ReactRouterLink } from "react-router-dom";
 import { LuCalendar, LuMap, LuMapPin } from "react-icons/lu";
 
 import Page from "./component/Page";
@@ -27,12 +28,7 @@ import { useParams } from "react-router-dom";
 import { useState, useRef } from "react";
 import Radio from "./component/Radio";
 
-let User = {
-  fullName: "George Bou Faysal",
-  phoneNumber: 0o1234567,
-  accepted_invitation: false,
-  number_of_guests: 2,
-};
+
 
 const secondFont = {
   fontFamily: "inter",
@@ -86,7 +82,7 @@ const iconStyle = {
   const pageStyle = {
     height: "100vh",
     width: "100vw",
-    position: "relative",
+    
     color: "white",
     justifyContent: "center",
     alignItems: "center",
@@ -104,6 +100,9 @@ const iconStyle = {
     fontWeight: "bold",
   };
 
+  const [videoEnded, setVideoEnded] = useState(false);
+
+
   return (
     <Box
       gap={0}
@@ -113,8 +112,11 @@ const iconStyle = {
       height={"100vh"}
       scrollSnapType={"y mandatory"}
     >
-      <VStack {...pageStyle}>
-        <Box
+      
+
+      <Page bgImage={backgroundImage}>
+        <VStack gap={"4em"}>
+          <Box
           ref={videoRef}
           position="absolute"
           height="full"
@@ -124,9 +126,31 @@ const iconStyle = {
           src={`${envVideo}`}
           objectFit="cover"
           muted
+          top={'0'}
           filter={`brightness(0.9)`}
-          zIndex="hide"
+          zIndex="2"
+          opacity={videoEnded ? 0 : 1}
+  transition="opacity 0.5s ease-in-out"
+  onEnded={() => setVideoEnded(true)}
         />
+          <Heading {...headingStyle}>
+            Youssef
+          </Heading>
+          <Heading {...headingStyle}>
+            &
+          </Heading>
+          <Heading {...headingStyle}>
+            Joelle
+          </Heading>
+        </VStack>
+
+        <Text marginTop={"64px"} {...textStyle}>
+          Are Getting Married
+        </Text>
+
+
+        
+        
 
         {/* Persistent background music - lives outside pages so it never unmounts */}
         <audio
@@ -144,29 +168,18 @@ const iconStyle = {
             color="white"
             fontSize="3rem"
             borderRadius="100%"
+            position={'absolute'}
+            top = {'50%'}
+            left = {'50%'}
+            transform={'translate(-50%, -50%)'}
+            zIndex={'3'}
           >
             Start
           </Button>
         )}
-      </VStack>
-
-      <Page bgImage={backgroundImage}>
-        <VStack gap={"4em"}>
-          <Heading {...headingStyle}>
-            Youssef
-          </Heading>
-          <Heading {...headingStyle}>
-            &
-          </Heading>
-          <Heading {...headingStyle}>
-            Joelle
-          </Heading>
-        </VStack>
-
-        <Text marginTop={"64px"} {...textStyle}>
-          Are Getting Married
-        </Text>
+      
       </Page>
+
 
       <Page bgImage={bgPage2}>
         <VStack height={"90vh"} padding={'24px'} justifyContent={'space-evenly'}>
@@ -199,7 +212,12 @@ const iconStyle = {
             size={"lg"}
             fontSize={"2rem"}
           >
+            <Link color={"white"}
+            size={"lg"}
+            fontSize={"2rem"} href="https://maps.app.goo.gl/Kbr9RGPftxn3z3aZ7">
             Locate Map
+            </Link>
+            
           </Button>
         </VStack>
         </VStack>
@@ -283,7 +301,12 @@ const iconStyle = {
             size={"lg"}
             fontSize={"1rem"}
           >
+            <Link color={"white"}
+            size={"lg"}
+            fontSize={"2rem"} href="https://maps.app.goo.gl/78bLsTYfbie5Hrse9">
             Locate Map
+            </Link>
+            
           </Button>
         </VStack>
         
@@ -325,7 +348,7 @@ const iconStyle = {
               We can't wait to celebrate with you!
             </Text>
           </VStack>
-          <Heading>{fullName}</Heading>
+          <Heading fontSize={'2.7rem'}>{fullName}</Heading>
           <Radio></Radio>
         </VStack>
       </Page>

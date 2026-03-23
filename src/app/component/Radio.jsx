@@ -23,7 +23,7 @@ export default function Radio() {
 
   return (
     <form onSubmit={onSubmit}>
-      <Fieldset.Root invalid={!!errors.value}>
+      <Fieldset.Root display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} invalid={!!errors.value}>
         <Fieldset.Legend textAlign={'center'} color={'white'}>Please Select </Fieldset.Legend>
         <Controller
           name="value"
@@ -53,8 +53,8 @@ export default function Radio() {
         {errors.value && (
           <Fieldset.ErrorText>{errors.value?.message}</Fieldset.ErrorText>
         )}
-
-        <Button size="sm" type="submit" alignSelf="flex-start">
+        
+        <Button  fontSize={'1rem'}  alignSelf={'center'}  size="sm" type="submit" >
           Submit
         </Button>
       </Fieldset.Root>
