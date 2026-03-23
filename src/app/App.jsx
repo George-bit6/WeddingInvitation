@@ -5,11 +5,11 @@ import {
   Button,
   Box,
   Text,
-  Marquee,
+  Icon,
   Image,
 } from "@chakra-ui/react";
 
-import { LuCalendar, LuMapPin } from "react-icons/lu";
+import { LuCalendar, LuMap, LuMapPin } from "react-icons/lu";
 
 import Page from "./component/Page";
 import "../styles/fonts.css";
@@ -21,9 +21,11 @@ import bgPage4 from "../assets/DSC01396.jpg";
 import bgPage5 from "../assets/DSC01445.jpg";
 import bgPage6 from "../assets/DSC01429.jpg";
 import envVideo from "../assets/openingEnvelope.mp4";
-import bgMusic from "../assets/YoureMyEverything.mpeg";
+import bgMusic from "../assets/YoureMyEverything.mp3";
+import supabase from "./supabase-client";
 import { useParams } from "react-router-dom";
 import { useState, useRef } from "react";
+import Radio from "./component/Radio";
 
 let User = {
   fullName: "George Bou Faysal",
@@ -44,6 +46,30 @@ export default function App() {
   const videoRef = useRef(null);
   const audioRef = useRef(null);
 
+const [selectedStatus, setSelectedStatus] = useState(null);
+
+const updateStatus = async (newStatus) => {
+  const { data, error } = await supabase
+    .from('Invitants')
+    .update({ status: newStatus })
+    .eq('id', id)
+    .select();
+
+  if (error) {
+    console.error('Failed to update status:', error.message);
+    throw error;
+  }
+
+  return data;
+};
+
+  
+const iconStyle = {
+
+  boxSize: {base:"8",md: "16",sl:"20",lg:"28"}
+}
+          
+
   const handleStart = () => {
     setStartClicked(true);
     if (videoRef.current) {
@@ -51,10 +77,10 @@ export default function App() {
       videoRef.current.play();
     }
 
-   if (audioRef.current) {
-    audioRef.current.load(); // 👈 call load() first when using <source> tags
-    audioRef.current.play();
-  }
+    if (audioRef.current) {
+      audioRef.current.load(); // 👈 call load() first when using <source> tags
+      audioRef.current.play();
+    }
   };
 
   const pageStyle = {
@@ -65,6 +91,17 @@ export default function App() {
     justifyContent: "center",
     alignItems: "center",
     scrollSnapAlign: "start",
+  };
+
+  const textStyle = {
+    textAlign: "center",
+    fontSize: {base:"1.7rem",md: "1.8rem",sl:"1.9rem",lg:"2rem"},
+  };
+
+  const headingStyle = {
+    fontSize: {base:"3.2rem",md: "3.5rem",sl:"3.8rem",lg:"4rem"},
+    textAlign: "center",
+    fontWeight: "bold",
   };
 
   return (
@@ -87,17 +124,17 @@ export default function App() {
           src={`${envVideo}`}
           objectFit="cover"
           muted
-          filter={`brightness(0.8)`}
+          filter={`brightness(0.9)`}
           zIndex="hide"
         />
 
         {/* Persistent background music - lives outside pages so it never unmounts */}
-       <audio
-  ref={audioRef}
-  src={bgMusic}  // 👈 place the .mpeg file in /public folder
-  loop
-  style={{ display: "none" }}
-/>
+        <audio
+          ref={audioRef}
+          src={bgMusic} // 👈 place the .mpeg file in /public folder
+          loop
+          style={{ display: "none" }}
+        />
         {!startClicked && (
           <Button
             onClick={handleStart} // 👈 use handleStart instead of inline setter
@@ -115,33 +152,36 @@ export default function App() {
 
       <Page bgImage={backgroundImage}>
         <VStack gap={"4em"}>
-          <Heading textAlign={"center"} fontSize={"5rem"}>
+          <Heading {...headingStyle}>
             Youssef
           </Heading>
-          <Heading textAlign={"center"} fontSize={"5rem"}>
+          <Heading {...headingStyle}>
             &
           </Heading>
-          <Heading textAlign={"center"} fontSize={"5rem"}>
+          <Heading {...headingStyle}>
             Joelle
           </Heading>
         </VStack>
 
-        <Heading marginTop={"64px"} fontSize={"2rem"} fontWeight={"normal"}>
+        <Text marginTop={"64px"} {...textStyle}>
           Are Getting Married
-        </Heading>
+        </Text>
       </Page>
 
       <Page bgImage={bgPage2}>
-        <Heading
+        <VStack height={"90vh"} padding={'24px'} justifyContent={'space-evenly'}>
+          <Heading
           fontSize={"4rem"}
           fontWeight={"bold"}
-          marginBottom={"5rem"}
+          marginBottom={"2rem"}
           textAlign={"center"}
         >
           Wedding Ceremony
         </Heading>
         <VStack gap={"7"} marginBottom={"4rem"}>
-          <LuCalendar size={"81px"} />
+          <Icon {...iconStyle} as={LuCalendar} />
+           
+          
           <Heading fontSize={"3rem"}>June 13,2026</Heading>
           <Heading fontWeight={"lighter"} fontSize={"3rem"}>
             6:30 pm
@@ -149,100 +189,104 @@ export default function App() {
         </VStack>
 
         <VStack gap={"7"}>
-          <LuMapPin size={"81px"} />
+           <Icon {...iconStyle} as={LuMapPin} />
+          
           <Heading fontSize={"3rem"}>Ste Rita Church,</Heading>
           <Heading fontSize={"3rem"}>Mar Roukoz</Heading>
           <Button
             variant={"outline"}
             color={"white"}
-            size={"2xl"}
-            fontSize={"3rem"}
+            size={"lg"}
+            fontSize={"2rem"}
           >
             Locate Map
           </Button>
         </VStack>
+        </VStack>
+        
       </Page>
 
       <Page bgImage={bgPage3}>
         <VStack height={"90vh"} justifyContent={"space-between"}>
           <VStack justifyContent={"flex-start"}>
             <VStack>
-              <Heading
-                fontSize={"2rem"}
-                textAlign={"center"}
+              <Text
+               {...textStyle}
                 fontWeight={"bold"}
                 marginBottom={"1rem"}
               >
                 With Joyous hearts
-              </Heading>
-              <Heading
-                fontSize={"2rem"}
-                textAlign={"center"}
+              </Text>
+              <Text
+                {...textStyle}
                 fontWeight={"bold"}
                 marginBottom={"1rem"}
               >
                 Maksour and Aoun Families invite you
-              </Heading>
-              <Heading
-                fontSize={"2rem"}
-                textAlign={"center"}
+              </Text>
+              <Text
+                {...textStyle}
                 fontWeight={"bold"}
                 marginBottom={"5rem"}
               >
                 to celebrate the Wedding of
-              </Heading>
+              </Text>
             </VStack>
             <Heading fontSize={"4rem"} textAlign={"center"} fontWeight={"bold"}>
               Youssef & Joelle
             </Heading>
           </VStack>
-          <Heading
-            fontSize={"2rem"}
-            textAlign={"center"}
+          <Text
+           {...textStyle}
             fontWeight={"bold"}
             marginBottom={"4rem"}
           >
             on June 13, 2026
-          </Heading>
+          </Text>
         </VStack>
       </Page>
       <Page bgImage={bgPage4}>
-        <Heading
+        <VStack height={"90vh"} padding={'24px'} justifyContent={'space-evenly'}>
+
+          <Text
           {...secondFont}
-          textAlign={"center"}
-          fontSize={"2rem"}
+          {...textStyle}
           fontWeight={"bold"}
-          marginBottom={"5rem"}
+          marginBottom={"1rem"}
         >
           Welcome Drink and Dinner
-        </Heading>
+        </Text>
         <VStack gap={"7"} marginBottom={"4rem"}>
-          <LuCalendar size={"81px"} />
-          <Heading {...secondFont} fontSize={"2rem"}>
+           <Icon {...iconStyle} as={LuCalendar} />
+         
+          <Text {...secondFont}{...textStyle}>
             June 13,2026
-          </Heading>
-          <Heading {...secondFont} fontWeight={"lighter"} fontSize={"2rem"}>
+          </Text>
+          <Text {...secondFont} fontWeight={"lighter"} {...textStyle}>
             8:00 pm
-          </Heading>
+          </Text>
         </VStack>
 
         <VStack gap={"7"}>
-          <LuMapPin size={"81px"} />
-          <Heading {...secondFont} fontSize={"2rem"}>
+          <Icon {...iconStyle} as={LuMapPin} />
+          
+          <Text {...secondFont} {...textStyle}>
             The Grandhouse
-          </Heading>
-          <Heading {...secondFont} fontSize={"2rem"}>
+          </Text>
+          <Text {...secondFont} {...textStyle}>
             Mansourieh
-          </Heading>
+          </Text>
           <Button
             {...secondFont}
             variant={"outline"}
             color={"white"}
-            size={"2xl"}
-            fontSize={"3rem"}
+            size={"lg"}
+            fontSize={"1rem"}
           >
             Locate Map
           </Button>
+        </VStack>
+        
         </VStack>
       </Page>
       <Page bgImage={bgPage5}>
@@ -251,13 +295,13 @@ export default function App() {
             Gift Registry
           </Heading>
           <VStack margin={"8px"}>
-            <Text fontWeight={"lighter"} fontSize={"2rem"} textAlign={"center"}>
+            <Text fontWeight={"lighter"} {...textStyle}>
               Having you celebrate with us is the only git we truly need
             </Text>
-            <Text fontWeight={"lighter"} fontSize={"2rem"} textAlign={"center"}>
+            <Text fontWeight={"lighter"} {...textStyle}>
               For those who desire a wedding list is available at Whish Money
             </Text>
-            <Text fontWeight={"lighter"} fontSize={"2rem"} textAlign={"center"}>
+            <Text fontWeight={"lighter"} {...textStyle}>
               Acc Number --------
             </Text>
           </VStack>
@@ -274,14 +318,15 @@ export default function App() {
             Be Our Guest
           </Heading>
           <VStack marginTop={"2rem"}>
-            <Text fontSize={"2.4rem"} textAlign={"center"}>
+            <Text {...textStyle}>
               Please Confirm by May 15
             </Text>
-            <Text fontSize={"2.4rem"} textAlign={"center"}>
+            <Text {...textStyle}>
               We can't wait to celebrate with you!
             </Text>
           </VStack>
           <Heading>{fullName}</Heading>
+          <Radio></Radio>
         </VStack>
       </Page>
     </Box>

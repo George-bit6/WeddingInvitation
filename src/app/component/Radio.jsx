@@ -1,48 +1,34 @@
-"use client"
+
 
 import { Button, Fieldset, HStack, RadioGroup } from "@chakra-ui/react"
-import { standardSchemaResolver } from "@hookform/resolvers/standard-schema"
 import { Controller, useForm } from "react-hook-form"
-import { z } from "zod"
 
 const items = [
-  { value: "1", label: "Option 1" },
-  { value: "2", label: "Option 2" },
-  { value: "3", label: "Option 3" },
+  { value: "Accepted", label: "Accept" },
+  { value: "Rejected", label: "Rejected" },
 ]
 
-const formSchema = z.object({
-  value: z.string({ message: "Value is required" }),
-})
-
-type FormValues = z.infer<typeof formSchema>
-
-
-export default function Radio(){
+export default function Radio() {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
-    resolver: standardSchemaResolver(formSchema),
+  } = useForm({
+    defaultValues: {
+      value: "",
+    },
   })
 
-  onValid = (data) => {
-
-
-        
-  }
-
-
-  const onSubmit = handleSubmit()
+  const onSubmit = handleSubmit((data) => console.log(data))
 
   return (
     <form onSubmit={onSubmit}>
       <Fieldset.Root invalid={!!errors.value}>
-        <Fieldset.Legend>Select value</Fieldset.Legend>
+        <Fieldset.Legend textAlign={'center'} color={'white'}>Please Select </Fieldset.Legend>
         <Controller
           name="value"
           control={control}
+          rules={{ required: "Value is required" }}
           render={({ field }) => (
             <RadioGroup.Root
               name={field.name}
