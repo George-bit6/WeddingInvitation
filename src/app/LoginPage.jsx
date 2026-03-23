@@ -1,12 +1,11 @@
 import "../styles/index.css";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import supabase from "./supabase-client";
 import { Input, VStack, Heading, Button, Text, Container, Center, Spinner } from "@chakra-ui/react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 export default function LoginPage() {
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [claims, setClaims] = useState(null);
@@ -78,10 +77,18 @@ export default function LoginPage() {
         setLoading(false);
     };
 
+    const navigate = useNavigate();
 
+    const handleRedirection = () => {
 
+        navigate('/Dashboard');
+ 
+    }
 
-
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        setClaims(null);
+    };
 
     // Show verification state
     if (verifying) {
@@ -131,18 +138,20 @@ export default function LoginPage() {
         );
     }
 
-
+    // If user is logged in, show welcome screen
     if (claims) {
-        navigate("/dashboard", { replace: true });
         return (
             <Center height={'100vh'}>
-                <Spinner />
-
-
-
-
-
-
+                <VStack gap="6">
+                    <Heading>Welcome!</Heading>
+                    <Text>You are logged in as: {claims.email}</Text>
+                    <Button onClick={handleLogout} colorScheme="red">      
+                        Sign Out
+                    </Button>
+                    <Button onClick={handleRedirection} colorScheme="red">      
+                        Dashboard
+                    </Button>
+                </VStack>
             </Center>
         );
     }
@@ -152,7 +161,7 @@ export default function LoginPage() {
       <Center height={'80vh'}>
         <VStack gap="12">
             <Heading fontSize="3xl">Sign In</Heading>
-
+            
             <form onSubmit={handleLogin}>
                 <VStack gap="4">
                     <Input
@@ -163,7 +172,7 @@ export default function LoginPage() {
                         required={true}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-
+                  
                     <Button type="submit" isLoading={loading} loadingText="Sending...">
                         Send magic link
                     </Button>
@@ -172,5 +181,4 @@ export default function LoginPage() {
         </VStack>
         </Center>
     );
-
 }
