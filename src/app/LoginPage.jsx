@@ -10,6 +10,11 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [claims, setClaims] = useState(null);
 
+const font2 = {
+    fontFamily:  'inter',
+    textAlign: 'center'
+}
+
     // Check URL params on initial render
     const params = new URLSearchParams(window.location.search);
     const hasTokenHash = params.get("token_hash");
@@ -95,8 +100,8 @@ export default function LoginPage() {
         return (
             <Center height={'100vh'}>
                 <VStack gap="4">
-                    <Heading>Authentication</Heading>
-                    <Text>Confirming your magic link...</Text>
+                    <Heading {...font2}>Authentication</Heading>
+                    <Text {...font2}>Confirming your magic link...</Text>
                     <Spinner />
                 </VStack>
             </Center>
@@ -108,10 +113,10 @@ export default function LoginPage() {
         return (
             <Center height={'100vh'}>
                 <VStack gap="4">
-                    <Heading>Authentication</Heading>
-                    <Text>✗ Authentication failed</Text>
-                    <Text color="red.500">{authError}</Text>
-                    <Button 
+                    <Heading {...font2}>Authentication</Heading>
+                    <Text {...font2}>✗ Authentication failed</Text>
+                    <Text {...font2} color="red.500">{authError}</Text>
+                    <Button  {...font2}
                         onClick={() => {
                             setAuthError(null);
                             window.history.replaceState({}, document.title, "/");
@@ -129,9 +134,9 @@ export default function LoginPage() {
         return (
             <Center height={'100vh'}>
                 <VStack gap="4">
-                    <Heading>Authentication</Heading>
-                    <Text>✓ Authentication successful!</Text>
-                    <Text>Loading your account...</Text>
+                    <Heading {...font2}>Authentication</Heading>
+                    <Text {...font2}>✓ Authentication successful!</Text>
+                    <Text {...font2}>Loading your account...</Text>
                     <Spinner />
                 </VStack>
             </Center>
@@ -143,12 +148,12 @@ export default function LoginPage() {
         return (
             <Center height={'100vh'}>
                 <VStack gap="6">
-                    <Heading>Welcome!</Heading>
-                    <Text>You are logged in as: {claims.email}</Text>
-                    <Button onClick={handleLogout} colorScheme="red">      
+                    <Heading {...font2}>Welcome!</Heading>
+                    <Text {...font2}>You are logged in as: {claims.email}</Text>
+                    <Button {...font2}onClick={handleLogout} colorScheme="red">      
                         Sign Out
                     </Button>
-                    <Button onClick={handleRedirection} colorScheme="red">      
+                    <Button {...font2}onClick={handleRedirection} colorScheme="red">      
                         Dashboard
                     </Button>
                 </VStack>
@@ -160,11 +165,11 @@ export default function LoginPage() {
     return (
       <Center height={'80vh'}>
         <VStack gap="12">
-            <Heading fontSize="3xl">Sign In</Heading>
+            <Heading fontSize="3xl" {...font2}>Sign In</Heading>
             
             <form onSubmit={handleLogin}>
                 <VStack gap="4">
-                    <Input
+                    <Input {...font2}
                         width="400px"
                         type="email"
                         placeholder="Your email"
@@ -173,7 +178,7 @@ export default function LoginPage() {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                   
-                    <Button type="submit" isLoading={loading} loadingText="Sending...">
+                    <Button {...font2}type="submit" isLoading={loading} loadingText="Sending...">
                         Send magic link
                     </Button>
                 </VStack>
