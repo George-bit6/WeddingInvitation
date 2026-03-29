@@ -195,7 +195,7 @@ export default function App() {
               For those who desire a wedding list is available at Whish Money
             </Text>
             <Text fontWeight={"lighter"} {...textStyle}>
-              Acc Number --------
+              Acc Number 20750348-03
             </Text>
           </VStack>
         </VStack>
