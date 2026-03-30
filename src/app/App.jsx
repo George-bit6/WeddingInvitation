@@ -6,7 +6,7 @@ import {
   Box,
   Text,
   Icon,
-  Link
+  Link,
 } from "@chakra-ui/react";
 
 import { Link as ReactRouterLink } from "react-router-dom";
@@ -30,32 +30,19 @@ import CustomRadio from "./component/Radio";
 
 
 
-const secondFont = {
-  fontFamily: "inter",
-};
-
 export default function App() {
   const { id, fullName } = useParams();
 
   const [startClicked, setStartClicked] = useState(false);
 
-  const videoRef = useRef(null);
   const audioRef = useRef(null);
 
-
-  
-const iconStyle = {
-
-  boxSize: {base:"8",md: "16",sl:"20",lg:"28"}
-}
-          
+  const iconStyle = {
+    boxSize: { base: "16", md: "20", sl: "20", lg: "28" },
+  };
 
   const handleStart = () => {
     setStartClicked(true);
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 2;
-      videoRef.current.play();
-    }
 
     if (audioRef.current) {
       audioRef.current.load(); // 👈 call load() first when using <source> tags
@@ -66,26 +53,26 @@ const iconStyle = {
   const pageStyle = {
     height: "100vh",
     width: "100vw",
-    
+
     color: "white",
     justifyContent: "center",
     alignItems: "center",
     scrollSnapAlign: "start",
+    fontFamily: "ImperialScript"
   };
 
   const textStyle = {
     textAlign: "center",
-    fontSize: {base:"1.7rem",md: "1.8rem",sl:"1.9rem",lg:"2rem"},
+    fontFamily: "ImperialScript",
+    fontSize: { base: "1.7rem", md: "1.8rem", sl: "1.9rem", lg: "2rem" },
   };
 
   const headingStyle = {
-    fontSize: {base:"3.2rem",md: "3.5rem",sl:"3.8rem",lg:"4rem"},
+    fontSize: { base: "3.2rem", md: "3.5rem", sl: "3.8rem", lg: "4rem" },
     textAlign: "center",
     fontWeight: "bold",
+    fontFamily: "ImperialScript"
   };
-
-  const [videoEnded, setVideoEnded] = useState(false);
-
 
   return (
     <Box
@@ -95,210 +82,109 @@ const iconStyle = {
       overflowY={"auto"}
       height={"100vh"}
       scrollSnapType={"y mandatory"}
+      fontFamily={'ImperialScript'}
     >
-      
-
-      <Page bgImage={backgroundImage}>
-        <VStack gap={"4em"}>
-          <Box
-          ref={videoRef}
-          position="absolute"
-          height="full"
-          width="full"
-          as="video"
-          controls={false}
-          src={`${envVideo}`}
-          objectFit="cover"
-          muted
-          top={'0'}
-          filter={`brightness(0.9)`}
-          zIndex="2"
-          opacity={videoEnded ? 0 : 1}
-  transition="opacity 0.5s ease-in-out"
-  onEnded={() => setVideoEnded(true)}
-        />
-          <Heading {...headingStyle}>
-            Youssef
-          </Heading>
-          <Heading {...headingStyle}>
-            &
-          </Heading>
-          <Heading {...headingStyle}>
-            Joelle
-          </Heading>
+     <Page bgImage={backgroundImage}>
+        {/* Updated VStack with conditional opacity and transition */}
+        <VStack 
+          gap={"4em"} 
+          opacity={startClicked ? 1 : 0} 
+          transition="opacity 1.5s ease-in-out"
+        >
+          <Heading {...headingStyle}>Youssef</Heading>
+          <Heading {...headingStyle}>&</Heading>
+          <Heading {...headingStyle}>Joelle</Heading>
         </VStack>
 
-        <Text marginTop={"64px"} {...textStyle}>
+        <Text 
+          opacity={startClicked ? 1 : 0} 
+          transition="opacity 1.5s ease-in-out" 
+          transitionDelay="0.5s" // Optional: makes the "Are Getting Married" appear slightly after the names
+          marginTop={"64px"} 
+          {...textStyle}
+        >
           Are Getting Married
         </Text>
 
-
-        
-        
-
-        {/* Persistent background music - lives outside pages so it never unmounts */}
         <audio
           ref={audioRef}
-          src={bgMusic} // 👈 place the .mpeg file in /public folder
+          src={bgMusic}
           loop
           style={{ display: "none" }}
         />
+        
         {!startClicked && (
           <Button
-            onClick={handleStart} // 👈 use handleStart instead of inline setter
+            onClick={handleStart}
             aspectRatio="1"
             variant="outline"
             height="8rem"
             color="white"
             fontSize="3rem"
             borderRadius="100%"
-            position={'absolute'}
-            top = {'50%'}
-            left = {'50%'}
-            transform={'translate(-50%, -50%)'}
-            zIndex={'3'}
+            position={"absolute"}
+            top={"50%"}
+            left={"50%"}
+            transform={"translate(-50%, -50%)"}
+            zIndex={"3"}
+            fontFamily={'ImperialScript'}
+            _hover={{ bg: "whiteAlpha.200" }} // Nice touch for interaction
           >
             Start
           </Button>
         )}
-      
       </Page>
 
-
-      <Page bgImage={bgPage2}>
-        <VStack height={"90vh"} padding={'24px'} justifyContent={'space-evenly'}>
-          <Heading
-          fontSize={"4rem"}
-          fontWeight={"bold"}
-          marginBottom={"2rem"}
-          textAlign={"center"}
+      <Page bgImage={bgPage4}>
+        <VStack
+          height={"90vh"}
+          padding={"24px"}
+          justifyContent={"space-evenly"}
         >
-          Wedding Ceremony
-        </Heading>
-        <VStack gap={"7"} marginBottom={"4rem"}>
-          <Icon {...iconStyle} as={LuCalendar} />
-           
-          
-          <Heading fontSize={"3rem"}>June 13,2026</Heading>
-          <Heading fontWeight={"lighter"} fontSize={"3rem"}>
-            6:30 pm
+          <Heading fontSize={"4rem"}
+            fontWeight={"bold"}
+            marginBottom={"2rem"}
+            textAlign={"center"}
+            fontFamily={'ImperialScript'}
+            lineHeight={'4rem'}>
+            Welcome Drink and Dinner
           </Heading>
-        </VStack>
+          <VStack gap={"7"} marginBottom={"4rem"}>
+            <Icon {...iconStyle} as={LuCalendar} />
 
-        <VStack gap={"7"}>
-           <Icon {...iconStyle} as={LuMapPin} />
-          
-          <Heading fontSize={"3rem"}>Ste Rita Church,</Heading>
-          <Heading fontSize={"3rem"}>Mar Roukoz</Heading>
-          <Button
-            variant={"outline"}
-            color={"white"}
-            size={"lg"}
-            fontSize={"2rem"}
-          >
-            <Link color={"white"}
-            size={"lg"}
-            fontSize={"2rem"} href="https://maps.app.goo.gl/Kbr9RGPftxn3z3aZ7">
-            Locate Map
-            </Link>
-            
-          </Button>
-        </VStack>
-        </VStack>
-        
-      </Page>
-
-      <Page bgImage={bgPage3}>
-        <VStack height={"90vh"} justifyContent={"space-between"}>
-          <VStack justifyContent={"flex-start"}>
-            <VStack>
-              <Text
-               {...textStyle}
-                fontWeight={"bold"}
-                marginBottom={"1rem"}
-              >
-                With Joyous hearts
-              </Text>
-              <Text
-                {...textStyle}
-                fontWeight={"bold"}
-                marginBottom={"1rem"}
-              >
-                Maksour and Aoun Families invite you
-              </Text>
-              <Text
-                {...textStyle}
-                fontWeight={"bold"}
-                marginBottom={"5rem"}
-              >
-                to celebrate the Wedding of
-              </Text>
-            </VStack>
-            <Heading fontSize={"4rem"} textAlign={"center"} fontWeight={"bold"}>
-              Youssef & Joelle
+            <Heading {...headingStyle}>June 13,2026</Heading>
+            <Heading fontWeight={"lighter"} {...textStyle} fontSize={'3rem'} >
+              8:00 pm
             </Heading>
           </VStack>
-          <Text
-           {...textStyle}
-            fontWeight={"bold"}
-            marginBottom={"4rem"}
-          >
-            on June 13, 2026
-          </Text>
-        </VStack>
-      </Page>
-      <Page bgImage={bgPage4}>
-        <VStack height={"90vh"} padding={'24px'} justifyContent={'space-evenly'}>
 
-          <Text
-          {...secondFont}
-          {...textStyle}
-          fontWeight={"bold"}
-          marginBottom={"1rem"}
-        >
-          Welcome Drink and Dinner
-        </Text>
-        <VStack gap={"7"} marginBottom={"4rem"}>
-           <Icon {...iconStyle} as={LuCalendar} />
-         
-          <Text {...secondFont}{...textStyle}>
-            June 13,2026
-          </Text>
-          <Text {...secondFont} fontWeight={"lighter"} {...textStyle}>
-            8:00 pm
-          </Text>
-        </VStack>
+          <VStack gap={"7"}>
+            <Icon {...iconStyle} as={LuMapPin} />
 
-        <VStack gap={"7"}>
-          <Icon {...iconStyle} as={LuMapPin} />
-          
-          <Text {...secondFont} {...textStyle}>
-            The Grandhouse
-          </Text>
-          <Text {...secondFont} {...textStyle}>
-            Mansourieh
-          </Text>
-          <Button
-            {...secondFont}
-            variant={"outline"}
-            color={"white"}
-            size={"lg"}
-            fontSize={"1rem"}
-          >
-            <Link color={"white"}
-            size={"lg"}
-            fontSize={"2rem"} href="https://maps.app.goo.gl/78bLsTYfbie5Hrse9">
-            Locate Map
-            </Link>
-            
-          </Button>
-        </VStack>
-        
+            <Heading fontSize={"3rem"} fontFamily={'ImperialScript'}>The Grandhouse</Heading>
+            <Heading fontSize={"3rem"} fontFamily={'ImperialScript'}>Mansourieh</Heading>
+            <Button
+              variant={"outline"}
+              color={"white"}
+              size={"lg"}
+              fontSize={"1rem"}
+            >
+              <Link
+                color={"white"}
+                fontFamily={'ImperialScript'}
+                size={"lg"}
+                fontSize={"2rem"}
+                href="https://maps.app.goo.gl/78bLsTYfbie5Hrse9"
+              >
+                Locate Map
+              </Link>
+            </Button>
+          </VStack>
         </VStack>
       </Page>
       <Page bgImage={bgPage5}>
         <VStack height={"80vh"} justifyContent={"space-between"}>
-          <Heading fontWeight={"lighter"} fontSize={"3.5rem"}>
+          <Heading fontFamily={'ImperialScript'} fontWeight={"lighter"} fontSize={"3.5rem"}>
             Gift Registry
           </Heading>
           <VStack margin={"8px"}>
@@ -309,7 +195,7 @@ const iconStyle = {
               For those who desire a wedding list is available at Whish Money
             </Text>
             <Text fontWeight={"lighter"} {...textStyle}>
-              Acc Number --------
+              Acc Number 20750348-03
             </Text>
           </VStack>
         </VStack>
@@ -321,18 +207,15 @@ const iconStyle = {
           marginTop={"1rem"}
           justifyContent={"flex-start"}
         >
-          <Heading fontSize={"4rem"} textAlign={"center"}>
+          <Heading fontFamily={'ImperialScript'} fontSize={"4rem"} textAlign={"center"}>
             Be Our Guest
           </Heading>
           <VStack marginTop={"2rem"}>
-            <Text {...textStyle}>
-              Please Confirm by May 15
-            </Text>
-            <Text {...textStyle}>
-              We can't wait to celebrate with you!
-            </Text>
+            <Text {...textStyle}>Please Confirm by May 15</Text>
+            <Text {...textStyle}>We can't wait to celebrate with you!</Text>
           </VStack>
-          <Heading fontSize={'2.7rem'}>{fullName}</Heading>
+          <Heading fontFamily={'ImperialScript'} fontSize={"2.7rem"}>{fullName}</Heading>
+         
           <CustomRadio id={id}></CustomRadio>
         </VStack>
       </Page>
