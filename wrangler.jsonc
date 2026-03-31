@@ -2,5 +2,5 @@
     "$schema": "./node_module/wrangler/config-schema.json",
     "name": "weddinginvitation",
     "pages_build_output_dir": "./dist",
-    "compatability_date": "2026-03-31"
+    "compatibility_date": "2026-03-31"
 }
