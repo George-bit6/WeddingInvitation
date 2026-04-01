@@ -10,3 +10,4 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
 
 export default supabase;
 
+console.log("Checking Supabase Config:", !!import.meta.env.VITE_SUPABASE_URL);
