@@ -94,6 +94,7 @@ export default function RsvpForm({ id }) {
 
       setIsSuccess(true);
     } catch (err) {
+      alert("RSVP Error: " + err.message + " | Details: " + (err.details || "none") + " | ID: " + id);
       setErrorMsg(err.message);
     } finally {
       setIsLoading(false);
